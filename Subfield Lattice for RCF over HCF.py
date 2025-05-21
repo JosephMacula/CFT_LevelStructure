@@ -33,7 +33,7 @@ def HCF_and_RCFconstructor(a, b):
 #is done in the most naive way, so it's probably very inefficient in general. Also, it does not determine
 #the full subfield lattice structure, though it's probably not hard to naively implement this as well.
 
-def HCF_to_RCF_fields2(RCF, HCF):
+def HCF_to_RCF_fields(RCF, HCF):
 
 	#Find all the subfields of the RCF
 	
