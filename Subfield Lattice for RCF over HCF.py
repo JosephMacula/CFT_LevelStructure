@@ -33,27 +33,25 @@ def HCF_and_RCFconstructor(a, b):
 #is done in the most naive way, so it's probably very inefficient in general. Also, it does not determine
 #the full subfield lattice structure, though it's probably not hard to naively implement this as well.
 
-def HCF_to_RCF_fields(RCF, HCF):
+def HCF_to_RCF_fields2(RCF, HCF):
 
 	#Find all the subfields of the RCF
 	
-	G = RCF.galois_group()
+	G = RCF.absolute_field(names='t').galois_group()
 	subfields_of_RCF = []
 	for i in G.subgroups():
 		subfields_of_RCF.append(i.fixed_field()[0])
 
 	#Find which subfields contain the HCF: looping through the subfields of the RCF,
-	#check to see if the minimal polynomial for a primitive element of the HCF, 
-	#given by sage via .defining_polynomial(), splits completely in the given subfield. 
+	#check to see if HCF embeds into the given subfield via the embeddings() method
 	
 	HCF_to_RCF_intermediate_fields = []
-	HCF_absolute.<a> = HCF.absolute_field()
-	HCF_polynomial = HCF_absolute.defining_polynomial()
-	for i in subfields_of_RCF:
-		if len(HCF_polynomial.change_ring(i).factor()) == HCF_polynomial.degree():
-			HCF_to_RCF_intermediate_fields.append(i)
-	return HCF_to_RCF_intermediate_fields
 
+	for i in range(0,len(subfields_of_RCF)):
+		if len(HCF.embeddings(subfields_of_RCF[i])) > 0:
+			HCF_to_RCF_intermediate_fields.append(subfields_of_RCF[i])
+	
+	return HCF_to_RCF_intermediate_fields
 
 #An example with K = Q(sqrt(-5)) and modulus (6). I'm making extensive use of the fact that we know Gal(RCF/HCF) is the Klein 4-group.
 #In particular, it follows from this that the only trace sums we need to consider are those that consist of a fixed root of RCFminpoly 
